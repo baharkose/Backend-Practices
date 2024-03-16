@@ -97,19 +97,20 @@ module.exports.BlogPost = {
     //   search[key] = { $regex: search[key], $options: "i" }; // i: insensitive
     // }
 
-// ! string hatasını çözmek için, searchkeyin string olup olmama durumunu kontrol ettik.
+    // ! string hatasını çözmek için, searchkeyin string olup olmama durumunu kontrol ettik.
 
-let searchCopy = {};
-for (let key in search) {
-  if (typeof search[key] === 'string') { // Yalnızca string değerler için
-    searchCopy[key] = { $regex: search[key], $options: 'i' };
-  } else {
-    // String olmayan değerleri doğrudan kopyala
-    searchCopy[key] = search[key];
-  }
-}
+    let searchCopy = {};
+    for (let key in search) {
+      if (typeof search[key] === "string") {
+        // Yalnızca string değerler için
+        searchCopy[key] = { $regex: search[key], $options: "i" };
+      } else {
+        // String olmayan değerleri doğrudan kopyala
+        searchCopy[key] = search[key];
+      }
+    }
 
-// `searchCopy` nesnesini kullanarak sorgunuzu yapın
+    // `searchCopy` nesnesini kullanarak sorgunuzu yapın
 
     // console.log(search);
 
@@ -122,8 +123,7 @@ for (let key in search) {
     const sort = req.query?.sort || {};
     // console.log(sort);
 
-    const data = await BlogPost.find({ ...filter, ...search }).sort(sort);
-    console.log(data);
+    
 
     // const data = await BlogPost.find({
     //   title: { $regex: "text" },
@@ -139,7 +139,19 @@ for (let key in search) {
     // limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
     // console.log("limit", limit);
 
+    //- ne olursa olsun bunu number yap.
+    let limit = Number(req.query?.limit);
+    // limit eğer doğru gönderilirse onu kabul et, yoksa 20 kabul et. Sayfa limit ayarlarını nerden çağırıyoruz. env'den. ENV'deki veriler her zaman string tipindedir. O nedenle gelen veriyi sayıya çevirmeliyiz.
+    limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
+    console.log(limit);
+
+    const data = await BlogPost.find({ ...filter, ...search }).sort(sort).limit(limit);
+    console.log(data);
+    // artık elimizde bir limit bilgisi var.
+
     // // Page:
+
+    
     // let page = Number(req.query?.page);
     // // page = page > 0 ? page : 1
     // page = page > 0 ? page - 1 : 0; // Backend 'de sayfa sayısı her zmaan page-1 olarak hesaplanmalı.
