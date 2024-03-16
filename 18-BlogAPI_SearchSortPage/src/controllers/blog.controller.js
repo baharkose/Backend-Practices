@@ -123,8 +123,6 @@ module.exports.BlogPost = {
     const sort = req.query?.sort || {};
     // console.log(sort);
 
-    
-
     // const data = await BlogPost.find({
     //   title: { $regex: "text" },
     //   options: "i",
@@ -145,14 +143,30 @@ module.exports.BlogPost = {
     limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
     console.log(limit);
 
-    const data = await BlogPost.find({ ...filter, ...search }).sort(sort).limit(limit);
     console.log(data);
     // artık elimizde bir limit bilgisi var.
 
     // // Page:
+    let page = Number(req.query?.page);
+    page = page > 0 ? page : 1;
+    console.log(page);
 
-    
+    // SKİP
+    // LIMIT 10, 10 -> İlk 10 kaydı atla ve 2. 10 kaydı getir. 10. kayıttan sonra 10 kaydı getir.
+
+    let skip = Number(req.query?.skip);
+    skip = skip > 0 ? skip :
+
+    // page 1 ise atlanacak kayıt sayısı 0, page 3 dediğimizde atlanacak kayıt sayısı 40
+
+    const data = await BlogPost.find({ ...filter, ...search })
+      .sort(sort)
+      .skip(10)
+      .limit(limit);
+    // ilk 10 kaydı atla limit olanı getir.
+
     // let page = Number(req.query?.page);
+
     // // page = page > 0 ? page : 1
     // page = page > 0 ? page - 1 : 0; // Backend 'de sayfa sayısı her zmaan page-1 olarak hesaplanmalı.
     // console.log("page", page);
