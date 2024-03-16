@@ -22,6 +22,8 @@ module.exports = async () => {
   /* Exampla Data */
   // Deleted All Records:
   // ! sayfalama vs. yapıcaz bunun için öncelikle tüm tabloları vs. sildik. Bir blog category oluşturduk. Her kategori için 200 adet örnek blog içeriği oluşturduk.
+  //   ? burada bir kullanıcı, bir kategory ve 200 adet blog oluşturuldu.
+
   await User.deleteMany().then(() => console.log(" - User Deleted All"));
   await BlogCategory.deleteMany().then(() =>
     console.log(" - BlogCategory Deleted All")

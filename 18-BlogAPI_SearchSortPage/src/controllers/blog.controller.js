@@ -63,7 +63,9 @@ module.exports.BlogPost = {
 
     list: async (req, res) => {
 
-        /* FILTERING & SEARCHING & SORTING & PAGINATION *
+        /* FILTERING & SEARCHING & SORTING & PAGINATION */
+
+        // ? filtreleme = bu var mı gibi bak. İçine bak
 
         // FILTERING:
         // URL?filter[key1]=value1&filter[key2]=value2
