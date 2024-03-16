@@ -88,44 +88,68 @@ module.exports.BlogPost = {
 
     // bu şekilde gelen veri bizim işimize yaramıyor ne yapmamız lazım. Bunu regex olarak yazmış olmamız lazım. Searchin her bir keyini, key nerden geliyor ilk değer title, content vs.
 
-    for (let key in search) {
-      // ? search, searchten bana obje olarak title ve content geliyor bende ne yapıyorum for ile  key datasını regexe eşitle
-      // search["title"] = { $regex: search["title"] };
-      // search["content"] = { $regex: search["content"] };
-      search[key] = { $regex: search[key] };
-      // search[key] = { $regex: search[key], $options: "i" }; // i: insensitive
-    }
-    // console.log(search);
+    // for (let key in search) {
+    //   // ? search, searchten bana obje olarak title ve content geliyor bende ne yapıyorum for ile  key datasını regexe eşitle.
+    //   // ! burada regexin görevi şu ifadeyi yani test data içerisinde içerip içermemesine göre arar.
+    //   // search["title"] = { $regex: search["title"] };
+    //   // search["content"] = { $regex: search["content"] };
+    //   // search[key] = { $regex: search[key] };
+    //   search[key] = { $regex: search[key], $options: "i" }; // i: insensitive
+    // }
 
-    const dataX = await BlogPost.find({ ...filter, ...search });
-    console.log(dataX);
+// ! string hatasını çözmek için, searchkeyin string olup olmama durumunu kontrol ettik.
+
+let searchCopy = {};
+for (let key in search) {
+  if (typeof search[key] === 'string') { // Yalnızca string değerler için
+    searchCopy[key] = { $regex: search[key], $options: 'i' };
+  } else {
+    // String olmayan değerleri doğrudan kopyala
+    searchCopy[key] = search[key];
+  }
+}
+
+// `searchCopy` nesnesini kullanarak sorgunuzu yapın
+
+    // console.log(search);
 
     // SORTING:
     // URL?sort[key1]=asc&sort[key2]=desc
     // 1: A-Z - -1: Z-A // deprecated
     // asc: A-Z - desc: Z-A
+    // req.query'den sortu getir ve eğer yoksa onu boş bir obje olarak kabul et.
+    // const sort = req.query?.sort || {}
     const sort = req.query?.sort || {};
-    // console.log(sort)
+    // console.log(sort);
+
+    const data = await BlogPost.find({ ...filter, ...search }).sort(sort);
+    console.log(data);
+
+    // const data = await BlogPost.find({
+    //   title: { $regex: "text" },
+    //   options: "i",
+    // });
+    // console.log(data);
 
     // PAGINATION:
     // URL?page=3&limit=10
 
-    // Limit:
-    let limit = Number(req.query?.limit);
-    limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
-    console.log("limit", limit);
+    // // Limit:
+    // let limit = Number(req.query?.limit);
+    // limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
+    // console.log("limit", limit);
 
-    // Page:
-    let page = Number(req.query?.page);
-    // page = page > 0 ? page : 1
-    page = page > 0 ? page - 1 : 0; // Backend 'de sayfa sayısı her zmaan page-1 olarak hesaplanmalı.
-    console.log("page", page);
+    // // Page:
+    // let page = Number(req.query?.page);
+    // // page = page > 0 ? page : 1
+    // page = page > 0 ? page - 1 : 0; // Backend 'de sayfa sayısı her zmaan page-1 olarak hesaplanmalı.
+    // console.log("page", page);
 
-    // Skip:
-    // LIMIT 20, 10
-    let skip = Number(req.query?.skip);
-    skip = skip > 0 ? skip : page * limit;
-    console.log("skip", skip);
+    // // Skip:
+    // // LIMIT 20, 10
+    // let skip = Number(req.query?.skip);
+    // skip = skip > 0 ? skip : page * limit;
+    // console.log("skip", skip);
 
     /* FILTERING & SEARCHING & SORTING & PAGINATION */
 
