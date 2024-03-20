@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
@@ -8,71 +8,81 @@
     $ npm i jsonwebtoken
 */
 
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
 /* ------------------------------------------------------- */
 // Required Modules:
 
 // envVariables to process.env:
-require('dotenv').config()
-const PORT = process.env?.PORT || 8000
+require("dotenv").config();
+const PORT = process.env?.PORT || 8000;
 
 // asyncErrors to errorHandler:
-require('express-async-errors')
+require("express-async-errors");
 
 /* ------------------------------------------------------- */
 // Configrations:
 
 // Connect to DB:
-const { dbConnection } = require('./src/configs/dbConnection')
-dbConnection()
+const { dbConnection } = require("./src/configs/dbConnection");
+dbConnection();
 
 /* ------------------------------------------------------- */
 // Middlewares:
 
 // Accept JSON:
-app.use(express.json())
+app.use(express.json());
 
 // SessionsCookies:
-app.use(require('cookie-session')({ secret: process.env.SECRET_KEY }))
+app.use(require("cookie-session")({ secret: process.env.SECRET_KEY }));
 
 // res.getModelList():
-app.use(require('./src/middlewares/findSearchSortPage'))
+app.use(require("./src/middlewares/findSearchSortPage"));
 
-// Login/Logout Control Middleware
-app.use(async (req, res, next) => {
+// // Login/Logout Control Middleware
 
-    const Personnel = require('./src/models/personnel.model')
+// Authentication simple cookie
+// app.use(async (req, res, next) => {
 
-    req.isLogin = false
+//     const Personnel = require('./src/models/personnel.model')
 
-    if (req.session?.id) {
+//     req.isLogin = false
 
-        const user = await Personnel.findOne({ _id: req.session.id })
+//     if (req.session?.id) {
 
-        // if (user && user.password == req.session.password) {
-        //     req.isLogin = true
-        // }
-        req.isLogin = user && user.password == req.session.password
-    }
-    console.log('isLogin: ', req.isLogin)
+//         const user = await Personnel.findOne({ _id: req.session.id })
 
-    next()
-})
+//         // if (user && user.password == req.session.password) {
+//         //     req.isLogin = true
+//         // }
+//         req.isLogin = user && user.password == req.session.password
+//     }
+//     console.log('isLogin: ', req.isLogin)
+
+//     next()
+// })
 
 /* ------------------------------------------------------- */
+/* ------------------------------------------------------- 
+
+Authnetication (Simple Token)
+/* ------------------------------------------------------- */
+
+app.use(require("./src/middlewares/authentication"));
 // Routes:
 
 // HomePath:
-app.all('/', (req, res) => {
-    res.send({
-        error: false,
-        message: 'Welcome to PERSONNEL API',
-        session: req.session,
-        isLogin: req.isLogin
-    })
-})
+app.all("/", (req, res) => {
+  res.send({
+    error: false,
+    message: "Welcome to PERSONNEL API",
+    // session: req.session,
+    // isLogin: req.isLogin,
+    // zaten user varsa bana gelicek.
+    user: req?.user,
+  });
+});
 
 // // * routerları başka dosyaya taşıma işlemi
 // // /departments
@@ -80,15 +90,14 @@ app.all('/', (req, res) => {
 // // /personnels
 // app.use('/personnels', require('./src/routes/personnel.router'))
 
-
-app.use(require("./src/routes/index"))
+app.use(require("./src/routes/index"));
 /* ------------------------------------------------------- */
 
 // errorHandler:
-app.use(require('./src/middlewares/errorHandler'))
+app.use(require("./src/middlewares/errorHandler"));
 
 // RUN SERVER:
-app.listen(PORT, () => console.log('http://127.0.0.1:' + PORT))
+app.listen(PORT, () => console.log("http://127.0.0.1:" + PORT));
 
 /* ------------------------------------------------------- */
 // Syncronization (must be in commentLine):

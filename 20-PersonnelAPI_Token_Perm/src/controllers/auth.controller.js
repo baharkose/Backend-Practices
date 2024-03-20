@@ -47,6 +47,8 @@ module.exports = {
           const tokenKey = passwordEncrypt(user._id + Date.now()); // benzersiz bir token adresi tanımladık.
           //   tokenı oluşturduk artık bunu frontEnde gönderebiliriz.
           console.log(typeof tokenKey, tokenKey);
+          //   await create kisminda ise normalde req.body objesi giderken kendimiz modeldeki verileri verdik ona gore token data kurduk
+
           tokenData = await Token.create({ userId: user._id, token: tokenKey });
         }
 
@@ -68,6 +70,28 @@ module.exports = {
   logout: async (req, res) => {
     // Set session to null:
     req.session = null;
+    // SESSION
+
+    // TOKEN
+    // logoutta token olmaz zorunda
+    // tek kullanıcı varsa
+    // 1. Yöntem (Kısa yöntem):
+
+    // console.log(req.user)
+    // await Token.deleteOne({ userId: req.user._id })
+
+    // 2. Yöntem:
+
+    // her kullanıcı için birden fazla token varsa, çoklu cihaz
+    const auth = req.headers?.authorization || null; // Token ...tokenKey...
+    const tokenKey = auth ? auth.split(" ") : null; // ['Token', '...tokenKey...']
+
+    if (tokenKey && tokenKey[0] == "Token") {
+      await Token.deleteOne({ token: tokenKey[1] });
+    }
+
+    // bir kullanıcıya birden fazla token neden verme ihtiyacı hissederiz. Farklı cihazlar için olabilir. Pc'den girerken farklı, tabletten girerken. Bu nedenle ikinci yönteme alışmak daha mantıklı.
+
     res.status(200).send({
       error: false,
       message: "Logout: Sessions Deleted.",
