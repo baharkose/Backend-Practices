@@ -47,4 +47,4 @@ const TokenSchema = new Schema(
 module.exports = mongoose.model("Token", TokenSchema);
 // şemamızı model haline döküyoruz. Şemayı token isminde bir modele çevir ve token şemayı çek.
 
-// ! her kullanıcının varlığını token ile anlayacağız...
+// ! her kullanıcının varlığını token ile anlayacağız... normalde tokena controller yazmaya gerek yok. heyecan .. 
