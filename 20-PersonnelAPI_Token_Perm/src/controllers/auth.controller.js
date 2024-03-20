@@ -45,12 +45,14 @@ module.exports = {
         if (!tokenData) {
           // burdaki veriyi de şifreledik ki daha güvenli
           const tokenKey = passwordEncrypt(user._id + Date.now()); // benzersiz bir token adresi tanımladık.
+          //   tokenı oluşturduk artık bunu frontEnde gönderebiliriz.
           console.log(typeof tokenKey, tokenKey);
           tokenData = await Token.create({ userId: user._id, token: tokenKey });
         }
 
         res.status(200).send({
           error: false,
+          token: tokenData.token,
           user,
         });
       } else {
