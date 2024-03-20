@@ -140,6 +140,7 @@ module.exports.BlogPost = {
     //- ne olursa olsun bunu number yap.
     let limit = Number(req.query?.limit);
     // limit eğer doğru gönderilirse onu kabul et, yoksa 20 kabul et. Sayfa limit ayarlarını nerden çağırıyoruz. env'den. ENV'deki veriler her zaman string tipindedir. O nedenle gelen veriyi sayıya çevirmeliyiz.
+    // ! Limit sayfa başı kayıt sayısı
     limit = limit > 0 ? limit : Number(process.env.PAGE_SIZE || 20);
     console.log(limit);
 
