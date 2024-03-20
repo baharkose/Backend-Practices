@@ -14,11 +14,14 @@ const router = require("express").Router();
 // // /personnels
 // app.use("/personnels", require("./src/routes/personnel.router"));
 
-// departments
-router.use("/departments", require("./src/routes/department.router"));
-// personnels
-router.use("/personnels", require("./src/routes/personnel.router"));
-// tokens
-router.use("/tokens", require("./src/routes/token.router"));
+// ! hiyerarşik sıralama
+// auth -> çoğul olmaz
+router.use("/auth", require("./auth.router"));
+// /token:
+router.use("/tokens", require("./token.router"));
+// department:
+router.use("/departments", require("./department.router"));
+// /personnel:
+router.use("/personnels", require("./personnel.router"));
 
 module.exports = router;

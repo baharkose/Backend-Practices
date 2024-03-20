@@ -74,12 +74,14 @@ app.all('/', (req, res) => {
     })
 })
 
-// * routerları başka dosyaya taşıma işlemi
-// /departments
-app.use('/departments', require('./src/routes/department.router'))
-// /personnels
-app.use('/personnels', require('./src/routes/personnel.router'))
+// // * routerları başka dosyaya taşıma işlemi
+// // /departments
+// app.use('/departments', require('./src/routes/department.router'))
+// // /personnels
+// app.use('/personnels', require('./src/routes/personnel.router'))
 
+
+app.use(require("./src/routes/index"))
 /* ------------------------------------------------------- */
 
 // errorHandler:

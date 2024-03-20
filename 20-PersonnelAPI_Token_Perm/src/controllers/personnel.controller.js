@@ -3,6 +3,9 @@
     EXPRESS - Personnel API
 ------------------------------------------------------- */
 
+// !2 login logout ayrı klasörde olur onları da ayıralım
+
+
 const Personnel = require('../models/personnel.model')
 
 module.exports = {

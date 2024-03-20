@@ -18,7 +18,7 @@ const { mongoose } = require("../configs/dbConnection");
 
 // Token Model:
 
-const TokenSchema = new Schema(
+const TokenSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.ObjectId,
