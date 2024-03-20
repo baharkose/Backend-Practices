@@ -17,7 +17,8 @@ module.exports = {
 
     if (username && password) {
       const user = await Personnel.findOne({ username, password });
-      if (user) {
+      if (user && user.isActive) {
+        // user ban yemiş olabilir. aktif değilse zaten token alamaz.
         // * SESSION
         // Set Session:
         // req.session = {
