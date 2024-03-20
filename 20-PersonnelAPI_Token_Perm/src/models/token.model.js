@@ -45,3 +45,6 @@ const TokenSchema = new Schema(
 
 // model ismi inctance , ilk harfleri de büyük PascalCase, controller camelCase
 module.exports = mongoose.model("Token", TokenSchema);
+// şemamızı model haline döküyoruz. Şemayı token isminde bir modele çevir ve token şemayı çek.
+
+// ! her kullanıcının varlığını token ile anlayacağız...
