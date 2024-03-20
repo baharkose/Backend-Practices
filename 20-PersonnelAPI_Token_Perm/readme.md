@@ -1,3 +1,10 @@
+<!-- // URL?filter[key1]=value1&filter[key2]=value2
+    const filter = req.query?.filter || {}
+    // console.log(filter)
+    // SEARCHING:
+    // URL?search[key1]=value1&search[key2]=value2
+    // -->
+
 # PERSONNEL API
 
 ### ERD:
