@@ -6,6 +6,8 @@
 // !2 login logout ayrı klasörde olur onları da ayıralım
 
 const Personnel = require("../models/personnel.model");
+const Token = require("../models/token.model");
+const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 module.exports = {
   // LOGIN & LOGOUT
@@ -41,7 +43,9 @@ module.exports = {
         // eğer token yoksa oluştur - key yap onu al. burada benzersiz bir şey koymamız lazım.
 
         if (!tokenData) {
-          const tokenKey = user._id + Date.now(); // benzersiz bir token adresi tanımladık.
+          // burdaki veriyi de şifreledik ki daha güvenli
+          const tokenKey = passwordEncrypt(user._id + Date.now()); // benzersiz bir token adresi tanımladık.
+          console.log(typeof tokenKey, tokenKey);
           tokenData = await Token.create({ userId: user._id, token: tokenKey });
         }
 
