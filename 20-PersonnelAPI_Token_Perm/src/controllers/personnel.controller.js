@@ -78,48 +78,48 @@ module.exports = {
         })
     },
 
-    // LOGIN & LOGOUT
+    // // LOGIN & LOGOUT
 
-    login: async (req, res) => {
+    // login: async (req, res) => {
 
-        const { username, password } = req.body
+    //     const { username, password } = req.body
 
-        if (username && password) {
+    //     if (username && password) {
 
-            const user = await Personnel.findOne({ username, password })
-            if (user) {
+    //         const user = await Personnel.findOne({ username, password })
+    //         if (user) {
 
-                // Set Session:
-                req.session = {
-                    id: user._id,
-                    password: user.password
-                }
-                // Set Cookie:
-                if (req.body?.rememberMe) {
-                    req.sessionOptions.maxAge = 1000 * 60 * 60 * 24 * 3 // 3 Days
-                }
+    //             // Set Session:
+    //             req.session = {
+    //                 id: user._id,
+    //                 password: user.password
+    //             }
+    //             // Set Cookie:
+    //             if (req.body?.rememberMe) {
+    //                 req.sessionOptions.maxAge = 1000 * 60 * 60 * 24 * 3 // 3 Days
+    //             }
 
-                res.status(200).send({
-                    error: false,
-                    user
-                })
+    //             res.status(200).send({
+    //                 error: false,
+    //                 user
+    //             })
 
-            } else {
-                res.errorStatusCode = 401
-                throw new Error('Wrong Username or Password.')
-            }
-        } else {
-            res.errorStatusCode = 401
-            throw new Error('Please entry username and password.')
-        }
-    },
+    //         } else {
+    //             res.errorStatusCode = 401
+    //             throw new Error('Wrong Username or Password.')
+    //         }
+    //     } else {
+    //         res.errorStatusCode = 401
+    //         throw new Error('Please entry username and password.')
+    //     }
+    // },
 
-    logout: async (req, res) => {
-        // Set session to null:
-        req.session = null
-        res.status(200).send({
-            error: false,
-            message: 'Logout: Sessions Deleted.'
-        })
-    },
+    // logout: async (req, res) => {
+    //     // Set session to null:
+    //     req.session = null
+    //     res.status(200).send({
+    //         error: false,
+    //         message: 'Logout: Sessions Deleted.'
+    //     })
+    // },
 }

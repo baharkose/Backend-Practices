@@ -1,20 +1,27 @@
-"use strict";
+"use strict"
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
-const router = require("express").Router();
+
+// // {
+//     "username": "testF0",
+//     "password": "1234"
+// }
 /* ------------------------------------------------------- */
 
-const personnel = require("../controllers/personnel.controller");
+
+const router = require('express').Router()
+/* ------------------------------------------------------- */
+
+const auth = require('../controllers/auth.controller')
 
 // URL: /auth
 
 // Login/logout:
-router.post("/login", personnel.login);
-router.all("/logout", personnel.logout);
+router.post('/login', auth.login)
+router.all('/logout', auth.logout)
 
 /* ------------------------------------------------------- */
-module.exports = router;
-
+module.exports = router
 
 // login ve logutu ayırdık bunu index.js'te tanıtmamızlazm
