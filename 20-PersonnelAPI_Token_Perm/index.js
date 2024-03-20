@@ -74,6 +74,7 @@ app.all('/', (req, res) => {
     })
 })
 
+// * routerları başka dosyaya taşıma işlemi
 // /departments
 app.use('/departments', require('./src/routes/department.router'))
 // /personnels
