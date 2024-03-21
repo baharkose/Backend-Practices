@@ -42,7 +42,27 @@ module.exports = {
       );
     }
   },
+  isAdminOrOwn: (req, res, next) => {
+    // + kendisini değiştirebilir ya da admin değiştirebilir
+    //+ personel id urlden geliyor
+    const personnel = req.params?.id;
+    //+ arkadaş giriş yaptı mı, aktif mi, admin mi, ya da kendi kaydnını mı yönetiyor
+    if (
+      req.user &&
+      req.user.isActive &&
+      (req.user.isAdmin || req.user.id == personnelId)
+    ) {
+      next();
+    } else {
+      res.errorStatusCode = 403;
+      throw new Error(
+        "NoPermission: You must login and to be Admin or Record Owner."
+      );
+    }
+  },
 };
+
+// + routera department
 
 //+ 1 session ve cookiler tarayıcılara özgü ve güvenilirliği sıkıntılı. O nedenle token mantığı platform bağımsızlığından dolayı daha çok tercih edilir. Bana illaki tokenla gel yoksa gelme.
 

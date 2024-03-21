@@ -29,7 +29,7 @@ router
   .patch(permissions.isAdmin && department.update)
   .delete(permissions.isAdmin && department.delete);
 // + sadece bu detayları admin ya da lead görebilir
-router.get("/:id/personnels", permissions.isAdminOrLead department.personnels);
+router.get("/:id/personnels", permissions.isAdminOrLead && department.personnels);
 
 /* ------------------------------------------------------- */
 module.exports = router;
