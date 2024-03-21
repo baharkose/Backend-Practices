@@ -48,4 +48,4 @@ module.exports = {
 
 // + token her zaman headerda gider kullanıcı başlığı altında gider. Artık bana her işlemde loginden sonra token vermek zorunda
 
-//+3 burada kullanıcı giriş yapmış mı, ikinci giriş yapmış ve admin mi, 3. giriş yapmışmı,  admin ya da lead mi. Eğer admin kontrolü yapmazsak iki ayrı middleware çağırmak zorunda kalıyoruz. 3 tane permission middlewarei yazdık. Şimdi bunları deneyelim...
+//+3 burada kullanıcı giriş yapmış mı, ikinci giriş yapmış ve admin mi, 3. giriş yapmışmı,  admin ya da lead mi. Eğer admin kontrolü yapmazsak iki ayrı middleware çağırmak zorunda kalıyoruz. 3 tane permission middlewarei yazdık. Şimdi bunları deneyelim...department routerı aç
