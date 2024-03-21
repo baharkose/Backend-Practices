@@ -175,6 +175,8 @@ const document = {
     // 		required: true
     // 	}
     // },
+
+    // ! sadece modelleri buraya yazacağız iş bu kadar.
     Department: require("./src/models/department.model").schema.obj,
     Personnel: require("./src/models/personnel.model").schema.obj,
   },
