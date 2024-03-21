@@ -25,7 +25,7 @@ module.exports = {
       throw new Error("NoPermission: You must login and to be Admin.");
     }
   },
-  isLead: (req, res, next) => {
+  isAdminOrLead: (req, res, next) => {
     // sadece kendi departmanlarını görebilir. önce departman idsini almamız lazım. reqden id olarak gelicek veya null gelicek. bana idnin gelmesi lazım. urlden idnin urlden geldiğini biliyorum onu almam lazım. mutlaka bir id gelmeli urlden
     // giriş yapmak zorunda -aktif olmalı ve admin olmalu yada admin değilse lead true olmalı ve userın departmanid'si req.userdan gelen departmentId'ye eşit olmak zorunda
     if (
@@ -43,3 +43,9 @@ module.exports = {
     }
   },
 };
+
+//+ 1 session ve cookiler tarayıcılara özgü ve güvenilirliği sıkıntılı. O nedenle token mantığı platform bağımsızlığından dolayı daha çok tercih edilir. Bana illaki tokenla gel yoksa gelme.
+
+// + token her zaman headerda gider kullanıcı başlığı altında gider. Artık bana her işlemde loginden sonra token vermek zorunda
+
+//+3 burada kullanıcı giriş yapmış mı, ikinci giriş yapmış ve admin mi, 3. giriş yapmışmı,  admin ya da lead mi. Eğer admin kontrolü yapmazsak iki ayrı middleware çağırmak zorunda kalıyoruz. 3 tane permission middlewarei yazdık. Şimdi bunları deneyelim...

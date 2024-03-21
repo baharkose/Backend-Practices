@@ -72,11 +72,13 @@ module.exports = {
   },
 
   logout: async (req, res) => {
+    // token silme işlemi
     // Set session to null:
     req.session = null;
     // SESSION
 
     // TOKEN
+
     // logoutta token olmaz zorunda
     // tek kullanıcı varsa
     // 1. Yöntem (Kısa yöntem):
