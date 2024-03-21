@@ -5,6 +5,9 @@
 
 // !2 login logout ayrı klasörde olur onları da ayıralım
 
+// + Dikkat: req.body ile bana bir username ve password gelicek. Bununla kullanıcı sisteme dahil olmaya çalışıcak. Post -> login -> body
+// + ben de bunun bilgilerini findOne yapıp arıyorum.
+
 const Personnel = require("../models/personnel.model");
 const Token = require("../models/token.model");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
@@ -17,6 +20,7 @@ module.exports = {
 
     if (username && password) {
       const user = await Personnel.findOne({ username, password });
+      // + burada encyrpt yapılmama nedeni modelde set işlemi ile encrypt yapmış olmamız. set metodu filtreleme işleminde de çalışır.
       if (user && user.isActive) {
         // user ban yemiş olabilir. aktif değilse zaten token alamaz.
         // * SESSION
@@ -31,7 +35,6 @@ module.exports = {
         // }
 
         // kullanıcın verilerini bir sesiona değil bir tokena havale etmemiz lazım bunu nasıl yapacağız?
-
         // bir modele ihtiyaç var. personel modele
 
         // * SESSION

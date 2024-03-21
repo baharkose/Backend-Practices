@@ -5,6 +5,7 @@
 
 const router = require("express").Router();
 
+// routes sayısı fazla olunca ayrı bir dosyaya taşıma işlemi daha sağlıklıdır.
 // ! ana routerlarımızı ayrı bir dosya içerisine taşıma işlemi
 // routeları ayrı dosyaya taşımak için yine router kullnammaız lazım.
 // routerda bir app amacı route yapmak olan app

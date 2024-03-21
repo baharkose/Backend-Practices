@@ -90,7 +90,9 @@ app.all("/", (req, res) => {
 // // /personnels
 // app.use('/personnels', require('./src/routes/personnel.router'))
 
-app.use(require("./src/routes/index"));
+// ? index demeden de çalışıyor
+app.use(require("./src/routes"));
+// app.use(require("./src/routes/index"));
 /* ------------------------------------------------------- */
 
 // errorHandler:

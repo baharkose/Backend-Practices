@@ -5,6 +5,13 @@
     // URL?search[key1]=value1&search[key2]=value2
     // -->
 
+<!-- For sample login -->
+<!--
+    {
+  "username": "testF0",
+  "password": "1234"
+} -->
+
 # PERSONNEL API
 
 ### ERD:

@@ -17,11 +17,13 @@ module.exports = async (req, res, next) => {
 
   if (tokenKey && tokenKey[0] == "Token") {
     // modele git ve veriyi tokenı ara eğer bulursan
+    // 
     const tokenData = await Token.findOne({ token: tokenKey[1] }).populate(
       "userId"
     );
     console.log(tokenData);
     // personel modülü çağırmadan personeli nasıl getiririm populate ile
+    // eğer tokenData varsa req.user'a tokenData'daki userId'yi ata
     if (tokenData) req.user = tokenData.userId; //personalData
     console.log(req.user);
   }
