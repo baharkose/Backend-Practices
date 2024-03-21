@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
@@ -8,25 +8,25 @@
     $ npm i jsonwebtoken
 */
 
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
 /* ------------------------------------------------------- */
 // Required Modules:
 
 // envVariables to process.env:
-require('dotenv').config()
-const PORT = process.env?.PORT || 8000
+require("dotenv").config();
+const PORT = process.env?.PORT || 8000;
 
 // asyncErrors to errorHandler:
-require('express-async-errors')
+require("express-async-errors");
 
 /* ------------------------------------------------------- */
 // Configrations:
 
 // Connect to DB:
-const { dbConnection } = require('./src/configs/dbConnection')
-dbConnection()
+const { dbConnection } = require("./src/configs/dbConnection");
+dbConnection();
 
 /* ------------------------------------------------------- *
 //* MORGAN LOGGING
@@ -67,20 +67,30 @@ app.use(morgan('combined', {
 
 // Accept JSON:
 
-
 //   $ npm i swagger-autogen -> bunun işi json oluşturmak
 // $ npm i swagger-ui-express -> jsonda görsele dönüştürme
 // $ npm i redoc-express
-app.use(express.json())
+
+// npm i swagger-autogen swagger-ui-express redoc-express
+
+// ? SWAGGER
+// + şu jsonu al ve kullan
+// + serve sistemi çalıştır şu urlde yayını yap.
+
+const swaggerUi = require('swagger-ui-express')
+const swaggerJson = require('./swagger.json')
+app.use('/documents/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJson, { swaggerOptions: { persistAuthorization: true } }))
+
+app.use(express.json());
 
 // Logging:
-app.use(require('./src/middlewares/logging'))
+app.use(require("./src/middlewares/logging"));
 
 // SessionsCookies:
-app.use(require('cookie-session')({ secret: process.env.SECRET_KEY }))
+app.use(require("cookie-session")({ secret: process.env.SECRET_KEY }));
 
 // res.getModelList():
-app.use(require('./src/middlewares/findSearchSortPage'))
+app.use(require("./src/middlewares/findSearchSortPage"));
 
 /* ------------------------------------------------------- *
 // Authentication (SessionCookies):
@@ -108,21 +118,21 @@ app.use(async (req, res, next) => {
 /* ------------------------------------------------------- */
 // Authentication (Simpe Token):
 
-app.use(require('./src/middlewares/authentication'))
+app.use(require("./src/middlewares/authentication"));
 
 /* ------------------------------------------------------- */
 // Routes:
 
 // HomePath:
-app.all('/', (req, res) => {
-    res.send({
-        error: false,
-        message: 'Welcome to PERSONNEL API',
-        // session: req.session,
-        // isLogin: req.isLogin,
-        user: req.user
-    })
-})
+app.all("/", (req, res) => {
+  res.send({
+    error: false,
+    message: "Welcome to PERSONNEL API",
+    // session: req.session,
+    // isLogin: req.isLogin,
+    user: req.user,
+  });
+});
 
 // // /departments
 // app.use('/departments', require('./src/routes/department.router'))
@@ -130,15 +140,15 @@ app.all('/', (req, res) => {
 // app.use('/personnels', require('./src/routes/personnel.router'))
 
 // app.use(require('./src/routes/index'))
-app.use(require('./src/routes/'))
+app.use(require("./src/routes/"));
 
 /* ------------------------------------------------------- */
 
 // errorHandler:
-app.use(require('./src/middlewares/errorHandler'))
+app.use(require("./src/middlewares/errorHandler"));
 
 // RUN SERVER:
-app.listen(PORT, () => console.log('http://127.0.0.1:' + PORT))
+app.listen(PORT, () => console.log("http://127.0.0.1:" + PORT));
 
 /* ------------------------------------------------------- */
 // Syncronization (must be in commentLine):
