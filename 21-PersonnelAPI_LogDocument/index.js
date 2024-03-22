@@ -59,28 +59,43 @@ app.use(morgan('combined', {
     stream: fs.createWriteStream(`./logs/${today}.log`, { flags: 'a+' })
 }))
 
+/* ------------------------------------------------------- */
+//* DOCUMENTATION:
+// https://swagger-autogen.github.io/docs/
+// $ npm i swagger-autogen
+// $ npm i swagger-ui-express
+// $ npm i redoc-express
 
+//? JSON
+app.use("/documents/json", (req, res) => {
+  res.sendFile("swagger.json", { root: "." });
+});
 
+//? SWAGGER:
+const swaggerUi = require("swagger-ui-express");
+const swaggerJson = require("./swagger.json");
+app.use(
+  "/documents/swagger",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerJson, {
+    swaggerOptions: { persistAuthorization: true },
+  })
+);
+
+// ? REDOC
+const redoc = require("redoc-express");
+app.use(
+  "/documents/redoc",
+  redoc({
+    title: "PersonnelAPI",
+    specUrl: "/documents/json",
+  })
+);
 
 /* ------------------------------------------------------- */
 // Middlewares:
 
 // Accept JSON:
-
-//   $ npm i swagger-autogen -> bunun işi json oluşturmak
-// $ npm i swagger-ui-express -> jsonda görsele dönüştürme
-// $ npm i redoc-express
-
-// npm i swagger-autogen swagger-ui-express redoc-express
-
-// ? SWAGGER
-// + şu jsonu al ve kullan
-// + serve sistemi çalıştır şu urlde yayını yap.
-
-const swaggerUi = require('swagger-ui-express')
-const swaggerJson = require('./swagger.json')
-app.use('/documents/swagger', swaggerUi.serve, swaggerUi.setup(swaggerJson, { swaggerOptions: { persistAuthorization: true } }))
-
 app.use(express.json());
 
 // Logging:
