@@ -20,6 +20,7 @@ router.route('/:id')
     .patch(permissions.isAdmin, department.update)
     .delete(permissions.isAdmin, department.delete)
 
+    // departments/564654654/personnels -> ilgili deparmandaki personelleri getir.
 router.get('/:id/personnels', permissions.isAdminOrLead, department.personnels)
 
 /* ------------------------------------------------------- */
