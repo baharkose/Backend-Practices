@@ -30,9 +30,9 @@ dbConnection();
 
 /* ------------------------------------------------------- *
 //* MORGAN LOGGING
-// https://expressjs.com/en/resources/middleware/morgan.html
-// https://github.com/expressjs/morgan
-//? $ npm i morgan
+https://expressjs.com/en/resources/middleware/morgan.html
+https://github.com/expressjs/morgan
+? $ npm i morgan
 
 const morgan = require('morgan')
 
@@ -66,31 +66,35 @@ app.use(morgan('combined', {
 // $ npm i swagger-ui-express
 // $ npm i redoc-express
 
-//? JSON
-app.use("/documents/json", (req, res) => {
-  res.sendFile("swagger.json", { root: "." });
-});
+// * MORGAN
+const morgan = require("morgan");
+app.use(morgan('IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent"'))
 
-//? SWAGGER:
-const swaggerUi = require("swagger-ui-express");
-const swaggerJson = require("./swagger.json");
-app.use(
-  "/documents/swagger",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerJson, {
-    swaggerOptions: { persistAuthorization: true },
-  })
-);
+// //? JSON
+// app.use("/documents/json", (req, res) => {
+//   res.sendFile("swagger.json", { root: "." });
+// });
 
-// ? REDOC
-const redoc = require("redoc-express");
-app.use(
-  "/documents/redoc",
-  redoc({
-    title: "PersonnelAPI",
-    specUrl: "/documents/json",
-  })
-);
+// //? SWAGGER:
+// const swaggerUi = require("swagger-ui-express");
+// const swaggerJson = require("./swagger.json");
+// app.use(
+//   "/documents/swagger",
+//   swaggerUi.serve,
+//   swaggerUi.setup(swaggerJson, {
+//     swaggerOptions: { persistAuthorization: true },
+//   })
+// );
+
+// // ? REDOC
+// const redoc = require("redoc-express");
+// app.use(
+//   "/documents/redoc",
+//   redoc({
+//     title: "PersonnelAPI",
+//     specUrl: "/documents/json",
+//   })
+// );
 
 /* ------------------------------------------------------- */
 // Middlewares:
@@ -99,7 +103,7 @@ app.use(
 app.use(express.json());
 
 // Logging:
-app.use(require("./src/middlewares/logging"));
+// app.use(require("./src/middlewares/logging"));
 
 // SessionsCookies:
 app.use(require("cookie-session")({ secret: process.env.SECRET_KEY }));
