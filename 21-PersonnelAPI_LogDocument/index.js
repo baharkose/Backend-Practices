@@ -68,7 +68,27 @@ app.use(morgan('combined', {
 
 // * MORGAN
 const morgan = require("morgan");
-app.use(morgan('IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent"'))
+app.use(
+  morgan(
+    'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent"'
+  )
+);
+
+// ? write to log file
+
+const fs = require("node:fs");
+app.use(
+  morgan(
+    'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent',
+    {
+      // ikinci parametrede log kayıtlarını bir dosyaya kaydet diyoruz.
+      // log kayıtları bir akıştır. fs modülünde akışı kaydeden modül createWriteStream'dir. Peki nereye bunu kaydedeceğiz İçinde bulunduğum klasörde access.log adındaki dosyaya bunu kaydet.
+
+      // + Flags → dosyaya yazma işlemi nasıl yapılacak. ÜStüne mi ekleyecek en baştan mı yazacak vs. vs. a+, aç hem okuma hem yazma için ve üzerine ekle eskisini silme.
+      stream: fs.createWriteStream("./access.log", { flags: "a+" }),
+    }
+  )
+);
 
 // //? JSON
 // app.use("/documents/json", (req, res) => {
