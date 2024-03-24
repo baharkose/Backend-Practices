@@ -9,7 +9,7 @@
 
 module.exports = {
   isLogin: (req, res, next) => {
-    // neden permissionda isActive tekrar check ediliyor. login olduktan sonra da masife çekilmiş olabilir.
+    // neden permissionda isActive tekrar check ediliyor. login olduktan sonra da masife çekilmiş olabilir. req.user bize burada token işleminden geliyor.
     if (req.user && req.user.isActive) {
       next();
     } else {

@@ -63,6 +63,7 @@ module.exports = {
     // })
   },
 
+  // departmana ait personelleri listelemek için ne yaptık. Personeli çağırıdk. Şuan üç parametre aldık.  ilk modeli yolladık. araya bir de filtreleme yolladık.
   personnels: async (req, res) => {
     const Personnel = require("../models/personnel.model");
 

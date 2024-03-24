@@ -28,7 +28,7 @@ router
   .put(permissions.isAdmin && department.update)
   .patch(permissions.isAdmin && department.update)
   .delete(permissions.isAdmin && department.delete);
-// + sadece bu detayları admin ya da lead görebilir
+// + sadece bu detayları admin ya da lead görebilir. Departmana ait olan personelleri getirme
 router.get("/:id/personnels", permissions.isAdminOrLead && department.personnels);
 
 /* ------------------------------------------------------- */
