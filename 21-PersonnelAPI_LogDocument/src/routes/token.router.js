@@ -1,11 +1,11 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
-const router = require('express').Router()
+const router = require("express").Router();
 /* ------------------------------------------------------- */
 
-const token = require('../controllers/token.controller')
+const token = require("../controllers/token.controller");
 // const permissions = require('../middlewares/permissions')
 
 // URL: /tokens
@@ -20,20 +20,23 @@ const token = require('../controllers/token.controller')
 //     .patch(permissions.isAdmin, token.update)
 //     .delete(permissions.isAdmin, token.delete)
 
-const { isAdmin } = require('../middlewares/permissions')
+// ? tüm permissonlara ihtiyacımız yok o nedenle destr. ile alabiliriz.
+
+const { isAdmin } = require("../middlewares/permissions");
 
 // router.use(permissions.isAdmin)
-router.use(isAdmin)
+// ! tüm routerlara ortak olarak isAdmin verdiğimiz için direk router.use diyerek de bütün bir routea router.use(isAdmin) -> deyip tüm routelar için geçerli hale getirebiliriz.
 
-router.route('/')
-    .get(token.list)
-    .post(token.create)
+router.use(isAdmin);
 
-router.route('/:id')
-    .get(token.read)
-    .put(token.update)
-    .patch(token.update)
-    .delete(token.delete)
+router.route("/").get(token.list).post(token.create);
+
+router
+  .route("/:id")
+  .get(token.read)
+  .put(token.update)
+  .patch(token.update)
+  .delete(token.delete);
 
 /* ------------------------------------------------------- */
-module.exports = router
+module.exports = router;
