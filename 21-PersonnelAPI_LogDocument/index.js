@@ -66,34 +66,57 @@ app.use(morgan('combined', {
 // $ npm i swagger-ui-express
 // $ npm i redoc-express
 
-// * MORGAN
-const morgan = require("morgan");
-app.use(
-  morgan(
-    'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent"'
-  )
-);
+// // * MORGAN
+// const morgan = require("morgan");
+// app.use(
+//   morgan(
+//     'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent"'
+//   )
+// );
 
 // ? write to log file
+// const fs = require("node:fs");
+// app.use(
+//   morgan(
+//     'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent',
+//     {
+//       // ikinci parametrede log kayıtlarını bir dosyaya kaydet diyoruz.
+//       // log kayıtları bir akıştır. fs modülünde akışı kaydeden modül createWriteStream'dir. Peki nereye bunu kaydedeceğiz İçinde bulunduğum klasörde access.log adındaki dosyaya bunu kaydet.
 
-const fs = require("node:fs");
-app.use(
-  morgan(
-    'IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | STATUS=:status | LENGTH=:res[content-length] | REF=:referrer | AGENT=":user-agent',
-    {
-      // ikinci parametrede log kayıtlarını bir dosyaya kaydet diyoruz.
-      // log kayıtları bir akıştır. fs modülünde akışı kaydeden modül createWriteStream'dir. Peki nereye bunu kaydedeceğiz İçinde bulunduğum klasörde access.log adındaki dosyaya bunu kaydet.
+//       // + Flags → dosyaya yazma işlemi nasıl yapılacak. ÜStüne mi ekleyecek en baştan mı yazacak vs. vs. a+, aç hem okuma hem yazma için ve üzerine ekle eskisini silme.
+//       stream: fs.createWriteStream("./access.log", { flags: "a+" }),
+//     }
+//   )
+// );
 
-      // + Flags → dosyaya yazma işlemi nasıl yapılacak. ÜStüne mi ekleyecek en baştan mı yazacak vs. vs. a+, aç hem okuma hem yazma için ve üzerine ekle eskisini silme.
-      stream: fs.createWriteStream("./access.log", { flags: "a+" }),
-    }
-  )
-);
+// ? write to file day by day
+// yine bunun için fs modülüne ihtiyacımız var.
+
+// const fs = require("node:fs");
+// // gün gün tutacağımız için güne de ihtiyacımız var.
+// const now = new Date();
+// console.log(now);
+// // 2024-03-24T12:24:39.806Z
+// // gelen şuanki zaman formatını split ile parçalayıp bugünü aldık.
+// const today = now.toISOString().split("T")[0];
+// app.use(
+//   morgan("combined", {
+//     stream: fs.createWriteStream(`./logs/${today}.log`, { flags: "a+" }),
+//   })
+// );
 
 // //? JSON
 // app.use("/documents/json", (req, res) => {
 //   res.sendFile("swagger.json", { root: "." });
 // });
+
+//* DOCUMENTATION:
+// https://swagger-autogen.github.io/docs/
+// + otomatik swagger dosyası oluşturur bizim için. işi json dosyası oluşturmak.
+// $ npm i swagger-autogen
+//+ json dosyasını alıp görüntüleme işlemi yapar. Görsele dönüştürme işlemi
+// $ npm i swagger-ui-express
+// $ npm i redoc-express
 
 // //? SWAGGER:
 // const swaggerUi = require("swagger-ui-express");
@@ -105,6 +128,12 @@ app.use(
 //     swaggerOptions: { persistAuthorization: true },
 //   })
 // );
+
+const swaggerUi = require("swagger-ui-express")
+// hangi urlde sistemi çalıştırmak istiyorsak onu yazıyoruzx ve içierisine de setup ile ayarlamaları yapıyoruz. Birinci parametre hangi json dosyası alıcak.
+app.use("/documents/swagger", swaggerUi.serve, swaggerUi.setup())
+
+
 
 // // ? REDOC
 // const redoc = require("redoc-express");
@@ -119,11 +148,13 @@ app.use(
 /* ------------------------------------------------------- */
 // Middlewares:
 
+
+
 // Accept JSON:
 app.use(express.json());
 
 // Logging:
-// app.use(require("./src/middlewares/logging"));
+app.use(require("./src/middlewares/logging"));
 
 // SessionsCookies:
 app.use(require("cookie-session")({ secret: process.env.SECRET_KEY }));

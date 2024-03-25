@@ -206,10 +206,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "isAdmin": {
+                "req": {
                   "example": "any"
                 },
-                "req": {
+                "isAdmin": {
                   "example": "any"
                 },
                 "salary": {
@@ -259,10 +259,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "isAdmin": {
+                "req": {
                   "example": "any"
                 },
-                "req": {
+                "isAdmin": {
                   "example": "any"
                 },
                 "salary": {
@@ -678,7 +678,7 @@
             },
             "default": {
               "type": "number",
-              "example": 1711054798743
+              "example": 1711285594664
             }
           }
         }
