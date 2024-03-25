@@ -129,9 +129,25 @@ app.use(morgan('combined', {
 //   })
 // );
 
-const swaggerUi = require("swagger-ui-express")
-// hangi urlde sistemi çalıştırmak istiyorsak onu yazıyoruzx ve içierisine de setup ile ayarlamaları yapıyoruz. Birinci parametre hangi json dosyası alıcak.
-app.use("/documents/swagger", swaggerUi.serve, swaggerUi.setup())
+//? JSON
+
+
+
+// ? SWAGGER
+const swaggerUi = require("swagger-ui-express");
+// hangi urlde sistemi çalıştırmak istiyorsak onu yazıyoruzx ve içierisine de setup ile ayarlamaları yapıyoruz. Birinci parametre hangi json dosyası alıcak. şu urlde swagger yayını yap. serve sistemi çalıştır. ayarlar için setupta bir obje açıyoruz. ilk parametre json soyası nerde, ikinci ise token moken vs. çalışması için
+
+const swagger = require("./swagger.json");
+app.use(
+  "/documents/swagger",
+  swaggerUi.serve,
+  //   swaggerUi.setup("./swagger.json", {
+  // buraya bunu bu şekilde yazmak yetmiyor onu require etmemiz lazım
+  swaggerUi.setup(swagger, {
+    swaggerOptions: { persistAuthorization: true },
+  })
+);
+
 
 
 
@@ -147,8 +163,6 @@ app.use("/documents/swagger", swaggerUi.serve, swaggerUi.setup())
 
 /* ------------------------------------------------------- */
 // Middlewares:
-
-
 
 // Accept JSON:
 app.use(express.json());
