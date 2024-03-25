@@ -45,7 +45,11 @@ module.exports = {
             tokenData = await Token.create({
               userId: user.id,
               // şuanki zamanı saniye cinsinden al
-              token: passowrdEncrypt(user.id + Data.now()),
+              token: passwordEncrypt(user.id + Data.now()),
+            });
+            res.status(200).send({
+              error: false,
+              token: tokenData.token,
             });
           }
         }
@@ -55,5 +59,21 @@ module.exports = {
       throw new Error("Please enter username/email and password.");
     }
   },
-  logout: async (req, res) => {},
+  logout: async (req, res) => {
+    /*
+        #swagger.tags = ["Authentication"]
+        #swagger.summary = "simpleToken: Logout"
+        #swagger.description = 'Delete token key.'
+    */
+
+    const auth = req.headers?.authorization; // Token ...tokenKey...
+    const tokenKey = auth ? auth.split(" ") : null; // ['Token', '...tokenKey...']
+    result = await Token.deleteOne({ token: tokenKey[1] });
+
+    res.send({
+      error: false,
+      message: "Token deleted. Logout was OK.",
+      result,
+    });
+  },
 };
