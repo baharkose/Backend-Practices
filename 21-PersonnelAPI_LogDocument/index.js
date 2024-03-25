@@ -129,8 +129,6 @@ app.use(morgan('combined', {
 //   })
 // );
 
-//? JSON
-
 
 
 // ? SWAGGER
@@ -148,8 +146,25 @@ app.use(
   })
 );
 
+//? JSON
+// ? JSONI EKRANA BASMA
+// JSON dosyasını urlde göstermek istiyorum…
+// documents/son urlsinde bir dosya içiriğini gösterme işlemi
+app.use("/documents/json", (req, res) => {
+    // res.sendFile yaptığımız zaman bir dosya içeriğini ekrana basabiliyoruz.
+    // ilk parametre göndereceğimiz dosya adı, root nerden alacağız biz bu dosyayı. . içinde bulunduğun klasörde ara
+    res.sendFile("./swagger.JSON", { root: "." });
+  });
 
+//? REDOC
+const redoc = require("redoc-express");
+// app.use deyip aynı mantık url yazıyoruz. ama bi kaç ayarlaması var.
+app.use("/documents/redoc",redoc({
+    title:"PERSONNELAPI",
+    // redoc bu datayo nerden alıcak az önce ekrana bastığımız yerden alıcak o yüzden spaca url kısmına swagger kullanarak ekrana bastığımız urli yazıyoruz.
+    specUrl:"/documents/json"
 
+}))
 
 // // ? REDOC
 // const redoc = require("redoc-express");
@@ -208,15 +223,25 @@ app.use(require("./src/middlewares/authentication"));
 // Routes:
 
 // HomePath:
-app.all("/", (req, res) => {
-  res.send({
-    error: false,
-    message: "Welcome to PERSONNEL API",
-    // session: req.session,
-    // isLogin: req.isLogin,
-    user: req.user,
-  });
-});
+
+app.all('/', (req, res) => {
+    res.send({
+        error: false,
+        message: 'Welcome to PERSONNEL API',
+        // session: req.session,
+        // isLogin: req.isLogin,
+        user: req.user,
+        api: {
+            documents: {
+                swagger: 'http://127.0.0.1:8000/documents/swagger',
+                redoc: 'http://127.0.0.1:8000/documents/redoc',
+                json: 'http://127.0.0.1:8000/documents/json',
+            },
+            contact: 'contact@clarusway.com'
+        },
+    })
+})
+
 
 // // /departments
 // app.use('/departments', require('./src/routes/department.router'))

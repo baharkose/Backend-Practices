@@ -16,7 +16,8 @@ const auth = require('../controllers/auth.controller')
 
 // Login/logout:
 router.post('/login', auth.login)
-router.all('/logout', auth.logout) // swagger all metodunu desteklemez
+// router.all('/logout', auth.logout) // swagger all metodunu desteklemez
+router.get('/logout', auth.logout) // swagger all metodunu desteklemez
 
 /* ------------------------------------------------------- */
 module.exports = router
