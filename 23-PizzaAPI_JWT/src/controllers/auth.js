@@ -74,9 +74,25 @@ module.exports = {
               password: user.password, // encyrtpted
             },
           };
+
+          //   30 dk süreli accessDatası accesskey ile bir tokena dönüştürüldü. İmzalama işlemi, ilk veri data, ikinci veri key, üçüncü veri süre. Üçüncü parametre aslında ayarlar işlemi
+          const accessToken = jwt.sign(accessInfo, accessInfo.key, {
+            expiresIn: accessInfo.time,
+          });
+
+          const refreshToken = jwt.sign(refreshInfo, refreshInfo.key, {
+            expiresIn: refreshInfo.time,
+            // expiresIn stringde olabilir olmayabilirde
+          });
+
           res.status(200).send({
             error: false,
             token: tokenData.token,
+            
+            bearer: {
+              access: accessToken,
+              refresh: refreshToken,
+            },
             user,
           });
         } else {
