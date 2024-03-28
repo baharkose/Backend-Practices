@@ -346,6 +346,7 @@ module.exports = {
             time: process.env.ACCESS_EXP || "30s",
             data: {
               id: user.id,
+              _id: user._id,
               username: user.username,
               email: user.email,
               password: user.password,
