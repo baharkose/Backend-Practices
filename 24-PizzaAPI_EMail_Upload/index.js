@@ -84,19 +84,19 @@ const nodemailer = require("nodemailer");
 
 // 2
 // önce mail serverına bağlan ve bana bu maili gönder
-const transporter = nodemailer.createTransport({
-  // mail gönderirken smtp
-  //SMTP
+// const transporter = nodemailer.createTransport({
+//   // mail gönderirken smtp
+//   //SMTP
 
-  host: "smtp.ethereal.email", // mail göndeirlecek host
-  port: 587,
-  secure: false, //ssl,tls
-  auth: {
-    user: "jmzhbr3hulxhreib@ethereal.email",
-    pass: "Ep7X5PTuzxjV4qQrPt",
-  },
-});
-console.log(transporter);
+//   host: "smtp.ethereal.email", // mail göndeirlecek host
+//   port: 587,
+//   secure: false, //ssl,tls
+//   auth: {
+//     user: "jmzhbr3hulxhreib@ethereal.email",
+//     pass: "Ep7X5PTuzxjV4qQrPt",
+//   },
+// });
+// console.log(transporter);
 
 /* ------------------------------------------------------- */
 
@@ -134,18 +134,36 @@ app.all("/", (req, res) => {
 // });
 
 // SendMail:
-transporter.sendMail(
-  {
-    from: "sfystdx7sif4vdr3@ethereal.email",
-    to: "qadir@clarusway.com", // 'a@b.com, c@d.com'
-    subject: "Hello",
-    text: "Hello There. How are you?",
-    html: "<b>Hello There.</b> <p>How are you?</p>",
+// transporter.sendMail(
+//   {
+//     from: "jmzhbr3hulxhreib@ethereal.email",
+//     to: "baharkse17@gmail.com",
+//     subject: "Hello",
+//     text: "Hello There. How are you?",
+//     html: "<b>Hello There.</b> <p>How are you?</p>",
+//   },
+//   (error, success) => {
+//     success ? console.log("SUCCESS", success) : console.log("ERROR", error);
+//   }
+// );
+
+// 250 mail gönderildi kodu
+
+// * googleMail (gmail)
+// //* Google -> AccountHome -> Security -> Two-Step-Verify -> App-Passwords
+
+// transporter ve senMaili yoruma aldık
+// gmail servisinde uzun uzun yazmaya gerek yok. ben zaten gmaili tanıuotum yaparım. ahngi servis olucak hail
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "baharkse17@gmail.com",
+    // password bizim mail passwordumuz değil o zmaan ne
+    pass: "", // buraya uygulama şifrelerine tıklayarak gelen şifreyi giriyoruz.
   },
-  (error, success) => {
-    success ? console.log("SUCCESS", success) : console.log("ERROR", error);
-  }
-);
+});
+
+transporter.sendMail({}, (err, success) => console.log(success, err));
 
 /* ------------------------------------------------------- */
 
