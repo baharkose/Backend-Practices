@@ -1,16 +1,15 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     NODEJS EXPRESS | CLARUSWAY FullStack Team
 ------------------------------------------------------- */
 // Order Controller:
 
-const Order = require('../models/order')
-const Pizza = require('../models/pizza')
+const Order = require("../models/order");
+const Pizza = require("../models/pizza");
 
 module.exports = {
-
-    list: async (req, res) => {
-        /*
+  list: async (req, res) => {
+    /*
             #swagger.tags = ["Orders"]
             #swagger.summary = "List Orders"
             #swagger.description = `
@@ -24,93 +23,109 @@ module.exports = {
             `
         */
 
-        // Manage only self-record.
-        let customFilter = {}
-        if (!req.user.isAdmin) {
-            customFilter = { userId: req.user.id }
-        }
+    // Manage only self-record.
+    let customFilter = {};
+    if (!req.user.isAdmin) {
+      customFilter = { userId: req.user.id };
+    }
 
-        // const data = await res.getModelList(Order, customFilter, ['userId', 'pizzaId'])
-        const data = await res.getModelList(Order, customFilter, [
-            'userId', 
-            { path: 'pizzaId', select: '-__v', populate: { path: 'toppingIds', select: 'name' } }, // 'pizzaId'
-        ])
+    // const data = await res.getModelList(Order, customFilter, ['userId', 'pizzaId'])
+    const data = await res.getModelList(Order, customFilter, [
+      "userId",
+      {
+        path: "pizzaId",
+        select: "-__v",
+        populate: { path: "toppingIds", select: "name" },
+      }, // 'pizzaId'
+    ]);
 
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(Order, customFilter),
-            data
-        })
-    },
+    res.status(200).send({
+      error: false,
+      details: await res.getModelListDetails(Order, customFilter),
+      data,
+    });
+  },
 
-    // CRUD:
+  // CRUD:
 
-    create: async (req, res) => {
-        /*
+  create: async (req, res) => {
+    /*
             #swagger.tags = ["Orders"]
             #swagger.summary = "Create Order"
         */
 
-        // get price from the pizza:
-        if (!req.body?.price) {
-            const pizzaData = await Pizza.findOne({ _id: req.body.pizzaId })
-            req.body.price = pizzaData.price
-        }
+    sendMail(
+      // sendMaili indexte tanıtmadık middleware değil
+      data.email, // to
+      `welcome ${data.username}`, // subject
+      "<h1>welcome</h1>", // message
+      "<p> Siparişiniz alındı</p>"
+    );
+    // get price from the pizza:
+    if (!req.body?.price) {
+      const pizzaData = await Pizza.findOne({ _id: req.body.pizzaId });
+      req.body.price = pizzaData.price;
+    }
 
-        const data = await Order.create(req.body)
+    const data = await Order.create(req.body);
 
-        res.status(201).send({
-            error: false,
-            data
-        })
-    },
+    res.status(201).send({
+      error: false,
+      data,
+    });
+  },
 
-    read: async (req, res) => {
-        /*
+  read: async (req, res) => {
+    /*
             #swagger.tags = ["Orders"]
             #swagger.summary = "Get Single Order"
         */
 
-        // Manage only self-record.
-        let customFilter = {}
-        if (!req.user.isAdmin) {
-            customFilter = { userId: req.user.id }
-        }
+    // Manage only self-record.
+    let customFilter = {};
+    if (!req.user.isAdmin) {
+      customFilter = { userId: req.user.id };
+    }
 
-        const data = await Order.findOne({ _id: req.params.id, ...customFilter }).populate(['userId', 'pizzaId'])
+    const data = await Order.findOne({
+      _id: req.params.id,
+      ...customFilter,
+    }).populate(["userId", "pizzaId"]);
 
-        res.status(200).send({
-            error: false,
-            data
-        })
-    },
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
 
-    update: async (req, res) => {
-        /*
+  update: async (req, res) => {
+    /*
             #swagger.tags = ["Orders"]
             #swagger.summary = "Update Order"
         */
 
-        const data = await Order.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
+    const data = await Order.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
 
-        res.status(202).send({
-            error: false,
-            data,
-            new: await Order.findOne({ _id: req.params.id })
-        })
-    },
+    res.status(202).send({
+      error: false,
+      data,
+      new: await Order.findOne({ _id: req.params.id }),
+    });
+  },
 
-    delete: async (req, res) => {
-        /*
+  delete: async (req, res) => {
+    /*
             #swagger.tags = ["Orders"]
             #swagger.summary = "Delete Order"
         */
 
-        const data = await Order.deleteOne({ _id: req.params.id })
+    const data = await Order.deleteOne({ _id: req.params.id });
 
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            data
-        })
-    }
-}
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      data,
+    });
+  },
+};

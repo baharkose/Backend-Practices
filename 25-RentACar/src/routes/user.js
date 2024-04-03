@@ -4,27 +4,22 @@
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// routes/pizza:
+// routes/user:
 
-const pizza = require('../controllers/pizza')
-const { isAdmin } = require('../middlewares/permissions')
+const user = require('../controllers/user')
+const permissions = require('../middlewares/permissions')
 
-
-// * upload
-// npm i multer
-
-
-// URL: /pizzas
+// URL: /users
 
 router.route('/')
-    .get(pizza.list)
-    .post(isAdmin, pizza.create)
+    .get(permissions.isStaff, user.list)
+    .post(user.create)
 
 router.route('/:id')
-    .get(pizza.read)
-    .put(isAdmin, pizza.update)
-    .patch(isAdmin, pizza.update)
-    .delete(isAdmin, pizza.delete)
+    .get(permissions.isLogin, user.read)
+    .put(permissions.isLogin, user.update)
+    .patch(permissions.isLogin, user.update)
+    .delete(permissions.isAdmin, user.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router

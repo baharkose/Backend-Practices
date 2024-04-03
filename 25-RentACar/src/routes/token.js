@@ -4,27 +4,25 @@
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// routes/pizza:
+// routes/token:
 
-const pizza = require('../controllers/pizza')
+const token = require('../controllers/token')
+
+// URL: /tokens
+
 const { isAdmin } = require('../middlewares/permissions')
 
-
-// * upload
-// npm i multer
-
-
-// URL: /pizzas
+router.use(isAdmin)
 
 router.route('/')
-    .get(pizza.list)
-    .post(isAdmin, pizza.create)
+    .get(token.list)
+    .post(token.create)
 
 router.route('/:id')
-    .get(pizza.read)
-    .put(isAdmin, pizza.update)
-    .patch(isAdmin, pizza.update)
-    .delete(isAdmin, pizza.delete)
+    .get(token.read)
+    .put(token.update)
+    .patch(token.update)
+    .delete(token.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router

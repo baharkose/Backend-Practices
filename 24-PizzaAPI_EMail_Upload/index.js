@@ -70,7 +70,7 @@ app.use(require("./src/middlewares/queryHandler"));
 //     web: 'https://ethereal.email'
 //   }
 
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 // create test(fake) account
 // bize test account bilgileri verir
 
@@ -154,17 +154,36 @@ app.all("/", (req, res) => {
 
 // transporter ve senMaili yoruma aldık
 // gmail servisinde uzun uzun yazmaya gerek yok. ben zaten gmaili tanıuotum yaparım. ahngi servis olucak hail
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "baharkse17@gmail.com",
-    // password bizim mail passwordumuz değil o zmaan ne
-    pass: "", // buraya uygulama şifrelerine tıklayarak gelen şifreyi giriyoruz.
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: "baharkse17@gmail.com",
+//     // password bizim mail passwordumuz değil o zmaan ne
+//     pass: "", // buraya uygulama şifrelerine tıklayarak gelen şifreyi giriyoruz.
+//   },
+// });
 
-transporter.sendMail({}, (err, success) => console.log(success, err));
+// transporter.sendMail(
+//   {
+//     from: "hfsjdfhsd@mail.com",
+//     // birden fazla mail göndermiş o yüzden , ile ayırabiliriz.
+//     to: "baharkse17@gmail.com",
+//     subject: "Hello",
+//     text: "Hello There. How are you?",
+//     html: "<b>Hello There.</b> <p>How are you?</p>",
+//   },
+//   (err, success) => console.log(success, err)
+// );
 
+
+// //? YandexMail (yandex):
+// const transporter = nodemailer.createTransport({
+//     service: 'Yandex',
+//     auth: {
+//         user: 'username@yandex.com',
+//         pass: 'password' // your emailPassword
+//     }
+// })
 /* ------------------------------------------------------- */
 
 // errorHandler:
